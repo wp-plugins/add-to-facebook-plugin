@@ -9,5 +9,5 @@ This plugin adds a footer link to add the current post or page to a Facebook Min
 
 == Installation ==
 1. Upload the addtofacebook.php to the '/wp-content/plugins/' directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Go to 'Options->Add to Facebook' in your admin interface and select whether you want your link to be text, image or both.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. Go to 'Options->Add to Facebook' in your admin interface and select whether you want your link to be text, image or both.
