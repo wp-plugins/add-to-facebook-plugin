@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Add To Facebook
-Version: 1.1
-Plugin URI: http://nothing.golddave.com/
+Version: 1.2
+Plugin URI: http://nothing.golddave.com/?page_id=108
 Description: Adds a footer link to add the current post or page to a Facebook Mini-Feed.
 Author: David Goldstein
 Author URI: http://nothing.golddave.com/
@@ -11,12 +11,16 @@ Author URI: http://nothing.golddave.com/
 /*
 Change Log
 
+1.2
+  * Added option to use a template tag.
+  * Fixed bug that prevented the Facebook icon to appear in version 1.1.
+
 1.1
   * Added options page to choose between text/image links.
 
 1.0
   * First public release.
-*/
+*/ 
 
 function add_to_facebook($data){
 	global $post;
@@ -27,22 +31,52 @@ function add_to_facebook($data){
 			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a></p>";
 			break;
 		case "image":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
+			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
 			break;
 		case "both":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a></p>";
+			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a></p>";
 			break;
 		}
 		return $data;
 }
 
-add_filter('the_content', 'add_to_facebook');
-add_filter('the_excerpt', 'add_to_facebook');
+function activate_add_to_facebook(){
+	global $post;
+	$current_options = get_option('add_to_facebook_options');
+	$insertiontype = $current_options['insertion_type'];
+	if ($insertiontype != 'template'){
+		add_filter('the_content', 'add_to_facebook');
+		add_filter('the_excerpt', 'add_to_facebook');
+	}
+}
+
+activate_add_to_facebook();
+
+function addtofacebook(){
+	global $post;
+	$current_options = get_option('add_to_facebook_options');
+	$insertiontype = $current_options['insertion_type'];
+	if ($insertiontype != 'auto'){
+		$linktype = $current_options['link_type'];
+		switch ($linktype) {
+			case "text":
+				echo "<a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a>";
+				break;
+			case "image":
+				echo "<a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a>";
+				break;
+			case "both":
+				echo "<a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a>";
+				break;
+			}
+		}
+}
 
 // Create the options page
 function add_to_facebook_options_page() { 
 	$current_options = get_option('add_to_facebook_options');
-	$type = $current_options["link_type"];
+	$link = $current_options["link_type"];
+	$insert = $current_options["insertion_type"];
 	if ($_POST['action']){ ?>
 		<div id="message" class="updated fade"><p><strong>Options saved.</strong></p></div>
 	<?php } ?>
@@ -57,9 +91,16 @@ function add_to_facebook_options_page() {
 					<tr>
 						<th valign="top" scope="row"><label for="link_type">Link Type:</label></th>
 						<td><select name="link_type">
-						<option value ="text"<?php if ($type == "text") { print " selected"; } ?>>Text Only</option>
-						<option value ="image"<?php if ($type == "image") { print " selected"; } ?>>Image Only</option>
-						<option value ="both"<?php if ($type == "both") { print " selected"; } ?>>Image and Text</option>
+						<option value ="text"<?php if ($link == "text") { print " selected"; } ?>>Text Only</option>
+						<option value ="image"<?php if ($link == "image") { print " selected"; } ?>>Image Only</option>
+						<option value ="both"<?php if ($link == "both") { print " selected"; } ?>>Image and Text</option>
+						</select></td>
+					</tr>
+					<tr>
+						<th valign="top" scope="row"><label for="insertion_type">Insertion Type:</label></th>
+						<td><select name="insertion_type">
+						<option value ="auto"<?php if ($insert == "auto") { print " selected"; } ?>>Auto</option>
+						<option value ="template"<?php if ($insert == "template") { print " selected"; } ?>>Template</option>
 						</select></td>
 					</tr>
 				</table>
@@ -80,6 +121,7 @@ function add_to_facebook_add_options_page() {
 function add_to_facebook_save_options() {
 	// create array
 	$add_to_facebook_options["link_type"] = $_POST["link_type"];
+	$add_to_facebook_options["insertion_type"] = $_POST["insertion_type"];
 	
 	update_option('add_to_facebook_options', $add_to_facebook_options);
 	$options_saved = true;
@@ -90,6 +132,7 @@ add_action('admin_menu', 'add_to_facebook_add_options_page');
 if (!get_option('add_to_facebook_options')){
 	// create default options
 	$add_to_facebook_options["link_type"] = 'text';
+	$add_to_facebook_options["insertion_type"] = 'auto';
 	
 	update_option('add_to_facebook_options', $add_to_facebook_options);
 }
