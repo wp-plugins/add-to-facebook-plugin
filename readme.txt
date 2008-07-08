@@ -25,5 +25,4 @@ Insertion Type - This option sets how you want to insert the link into your post
 
 * Auto - When insertion type is set to auto the Facebook link will automatically be inserted right after the post.
 * Template - When insertion type is set to template the Facebook link will appear wherever the template tag for the plugin is added to your theme. This option requires the following template tag to be added to your theme:
-
-<pre><code><?php if(function_exists(addtofacebook)) : addtofacebook(); endif; ?></code></pre>
+		<?php if(function_exists(addtofacebook)) : addtofacebook(); endif; ?>
