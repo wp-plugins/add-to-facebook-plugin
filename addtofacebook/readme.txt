@@ -29,4 +29,4 @@ Insertion Type - This option sets how you want to insert the link into your post
 == Template Tag ==
 The following template tag must be added to your theme in the location you want the link to appear when insertion type is set to template:
 
-`<?php if(function_exists(addtofacebook())) : addtofacebook(); endif; ?>`
+`<?php if(function_exists(addtofacebook)) : addtofacebook(); endif; ?>`
