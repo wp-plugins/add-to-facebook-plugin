@@ -11,6 +11,9 @@ Author URI: http://nothing.golddave.com/
 /*
 Change Log
 
+1.3
+  * Links now open in a new tab/window.
+
 1.2
   * Added option to use a template tag.
   * Fixed bug that prevented the Facebook icon to appear in version 1.1.
@@ -28,13 +31,13 @@ function add_to_facebook($data){
 	$linktype = $current_options['link_type'];
 	switch ($linktype) {
 		case "text":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a></p>";
+			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 			break;
 		case "image":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
+			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
 			break;
 		case "both":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a></p>";
+			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 			break;
 		}
 		return $data;
