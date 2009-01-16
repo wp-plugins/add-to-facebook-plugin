@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Add To Facebook
-Version: 1.2
+Version: 1.3
 Plugin URI: http://nothing.golddave.com/?page_id=108
 Description: Adds a footer link to add the current post or page to a Facebook Mini-Feed.
 Author: David Goldstein
