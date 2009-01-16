@@ -2,7 +2,7 @@
 Contributors: David Goldstein
 Tags: facebook
 Requires at least: 2.0
-Tested up to: 2.5.1
+Tested up to: 2.7
 Stable tag: trunk
 
 This plugin adds a footer link to add the current post or page to a Facebook Mini-Feed.
