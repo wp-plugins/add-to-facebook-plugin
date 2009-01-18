@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Add To Facebook
-Version: 1.3
+Version: 1.4
 Plugin URI: http://nothing.golddave.com/?page_id=108
 Description: Adds a footer link to add the current post or page to a Facebook Mini-Feed.
 Author: David Goldstein
@@ -10,6 +10,10 @@ Author URI: http://nothing.golddave.com/
 
 /*
 Change Log
+
+1.4
+  * Added CSS.
+  * Fixed bug that prevented the Facebook icon to appear in version 1.3.
 
 1.3
   * Links now open in a new tab/window.
@@ -31,13 +35,13 @@ function add_to_facebook($data){
 	$linktype = $current_options['link_type'];
 	switch ($linktype) {
 		case "text":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
+			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 			break;
 		case "image":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
+			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
 			break;
 		case "both":
-			$data=$data."<p><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
+			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 			break;
 		}
 		return $data;
@@ -48,8 +52,8 @@ function activate_add_to_facebook(){
 	$current_options = get_option('add_to_facebook_options');
 	$insertiontype = $current_options['insertion_type'];
 	if ($insertiontype != 'template'){
-		add_filter('the_content', 'add_to_facebook');
-		add_filter('the_excerpt', 'add_to_facebook');
+		add_filter('the_content', 'add_to_facebook', 10);
+		add_filter('the_excerpt', 'add_to_facebook', 10);
 	}
 }
 
@@ -63,13 +67,13 @@ function addtofacebook(){
 		$linktype = $current_options['link_type'];
 		switch ($linktype) {
 			case "text":
-				echo "<a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a>";
+				echo "<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 				break;
 			case "image":
-				echo "<a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a>";
+				echo "<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
 				break;
 			case "both":
-				echo "<a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/addtofacebook/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a> <a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\">Share on Facebook</a>";
+				echo "<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 				break;
 			}
 		}
@@ -143,5 +147,13 @@ if (!get_option('add_to_facebook_options')){
 if ($_POST['action'] == 'save_options'){
 	add_to_facebook_save_options();
 }
+
+function facebookcss() {
+	?>
+	<link rel="stylesheet" href="<?php bloginfo('wpurl'); ?>/wp-content/plugins/add-to-facebook-plugin/facebook.css" type="text/css" media="screen" />
+	<?php
+}
+
+add_action('wp_head', 'facebookcss');
 
 ?>
