@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Add To Facebook
-Version: 1.4
+Version: 1.4.1
 Plugin URI: http://nothing.golddave.com/?page_id=108
 Description: Adds a footer link to add the current post or page to a Facebook Mini-Feed.
 Author: David Goldstein
@@ -10,6 +10,9 @@ Author URI: http://nothing.golddave.com/
 
 /*
 Change Log
+
+1.4.1
+  * Added slashes at end of image tags per XHTML specification.
 
 1.4
   * Added CSS.
@@ -38,10 +41,10 @@ function add_to_facebook($data){
 			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 			break;
 		case "image":
-			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a></p>";
+			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\" /></a></p>";
 			break;
 		case "both":
-			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\"></a><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
+			$data=$data."<p class=\"facebook\"><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\"><img src=\"".get_bloginfo(wpurl)."/wp-content/plugins/add-to-facebook-plugin/facebook_share_icon.gif\" alt=\"Share on Facebook\" /></a><a href=\"http://www.facebook.com/share.php?u=".get_permalink($post->ID)."\" target=\"_blank\">Share on Facebook</a></p>";
 			break;
 		}
 		return $data;
