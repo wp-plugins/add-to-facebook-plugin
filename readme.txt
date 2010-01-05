@@ -11,6 +11,8 @@ This plugin adds a footer link to add the current post or page to a Facebook Min
 == Description ==
 This plugin adds a footer link to add the current post or page to a Facebook Mini-Feed.  While the plugin is activated a link will appear after the content of the post with the text "Share on Facebook" or the Facebook icon or both. Clicking this link will bring the user to the Facebook site.  If the user isn't logged in they will be prompted to do so. Once logged into Facebook the post will be added to the Mini-Feed of the account.
 
+This plugin is not compatible with Wordpress 2.9+.  Please switch to [Share on Facebook](http://wordpress.org/extend/plugins/share-on-facebook/ "Share on Facebook") for compatibility with Wordpress 2.9+.
+
 == Installation ==
 1. Add a directory called 'add-to-facebook-plugin' (without the quotes) to your '/wp-content/plugins/' directory.
 1. Upload addtofacebook.php and facebook_share_icon.gif to the '/wp-content/plugins/add-to-facebook-plugin/' directory.
